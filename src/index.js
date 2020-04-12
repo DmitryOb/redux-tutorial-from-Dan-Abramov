@@ -8,7 +8,7 @@ import { VisibleTodoList } from './components/VisibleTodoList';
 import { Footer } from './components/Footer';
 
 const todoApp = combineReducers({todos, visibilityFilter});
-console.log('after combine');
+
 ReactDOM.render(
     <Provider store={createStore(todoApp)}>
         <div>

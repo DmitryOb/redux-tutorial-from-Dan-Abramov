@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from "react-redux";
 
 const mapStateToLinkProps = (state, ownProps) => {
-    return {active: ownProps.filter === state.visibilityFilter};
+    return {
+        active: ownProps.filter === state.visibilityFilter,
+    };
 };
 const mapDispatchToLinkProps = (dispatch, ownProps) => {
     return {
-        onClick: () => {
+        onClickDispatch: () => {
             dispatch(
                 {
                     type: 'SET_VISIBILITY_FILTER',
@@ -16,7 +18,7 @@ const mapDispatchToLinkProps = (dispatch, ownProps) => {
         }
     };
 };
-const Link = ({active, children, onClick}) => {
+const Link = ({active, children, onClickDispatch}) => {
     if (active) {
         return <span>{children}</span>;
     }
@@ -24,7 +26,7 @@ const Link = ({active, children, onClick}) => {
         <a href='/'
            onClick={e => {
                e.preventDefault();
-               onClick();
+               onClickDispatch();
            }}
         >
             {children}
