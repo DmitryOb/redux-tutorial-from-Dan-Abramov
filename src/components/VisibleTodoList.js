@@ -1,6 +1,25 @@
 import React from 'react';
 import { connect } from "react-redux";
 
+const TodoList = ({todos, onTodoClick}) => (
+    <ul>
+        {
+            todos.map(
+                todo => <Todo key={todo.id}
+                              {...todo}
+                              onClick={() => onTodoClick(todo.id)}
+                        />
+            )
+        }
+    </ul>
+);
+
+const Todo = ({onClick, completed, text}) => (
+    <li onClick={onClick} style={{textDecoration: completed ? 'line-through' : 'none'}}>
+        {text}
+    </li>
+);
+
 const getVisibleTodos = (todos, filter) => {
     switch (filter) {
         case 'SHOW_ALL':
@@ -13,39 +32,19 @@ const getVisibleTodos = (todos, filter) => {
             return null;
     }
 };
-
-const toggleTodo = (id) => {
+const mapStateToTodoListProps = (state) => {
     return {
-        type: 'TOGGLE_TODO',
-        id
+        todos: getVisibleTodos(state.todos, state.visibilityFilter)
     };
 };
 
-const Todo = ({onClick, completed, text}) => (
-    <li onClick={onClick} style={{textDecoration: completed ? 'line-through' : 'none'}}>
-        {text}
-    </li>
-);
-
-const TodoList = ({todos, onTodoClick}) => (
-    <ul>
-        {
-            todos.map(
-                todo => <Todo key={todo.id}
-                              {...todo}
-                              onClick={() => onTodoClick(todo.id)}
-                />
-            )
-        }
-    </ul>
-);
-const mapStateToTodoListProps = (state) => {
-    return {todos: getVisibleTodos(state.todos, state.visibilityFilter)};
-};
 const mapDispatchToTodoListProps = (dispatch) => {
     return {
         onTodoClick: (id) => {
-            dispatch(toggleTodo(id))
+            dispatch({
+                type: 'TOGGLE_TODO',
+                id: id,
+            })
         }
     };
 };
